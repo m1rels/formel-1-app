@@ -1,6 +1,17 @@
 import React from "react";
 
-export default function DriversTable() {
+export default function DriversTable(props) {
+const driversDetails = props.drivers.MRData.StandingsTable.StandingsLists[0].DriverStandings;
+const drivers = [];
+
+driversDetails.forEach((driver) => {
+  drivers.push(<tr><td className="text-center">{driver.position}</td>
+  <td>{driver.Driver.givenName + " " + driver.Driver.familyName}</td>
+  <td className="text-center">{driver.points}</td>
+  <td className="text-center">{driver.wins}</td>
+  <td className="text-center">{driver.podiums}</td></tr>)
+})
+
   return (
 <table className="table">
   <thead>
@@ -13,13 +24,9 @@ export default function DriversTable() {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td className="text-center"><b>1</b></td>
-      <td><b>M. Verstappen</b></td>
-      <td className="text-center"><b>175</b></td>
-      <td className="text-center"><b>6</b></td>
-      <td className="text-center"><b>7</b></td>
-    </tr>
+    
+      {drivers}
+    
   </tbody>
 </table>
   )

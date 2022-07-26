@@ -1,6 +1,17 @@
 import React from "react";
 
-export default function DriversTable() {
+export default function ConstructorsTable(props) {
+  const constructorsDetails = props.constructors.MRData.StandingsTable.StandingsLists[0].ConstructorStandings;
+  console.log("Details", constructorsDetails);
+  const constructors = [];
+
+  constructorsDetails.forEach((constructor) => {
+  constructors.push(<tr><td className="text-center">{constructor.position}</td>
+  <td>{constructor.Constructor.name}</td>
+  <td className="text-center">{constructor.points}</td>
+  <td className="text-center">{constructor.wins}</td>
+  <td className="text-center"></td></tr>)
+})
   return (
     <table className="table">
   <thead>
@@ -13,13 +24,7 @@ export default function DriversTable() {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td className="text-center"><b>1</b></td>
-      <td><b>Red Bull</b></td>
-      <td className="text-center"><b>304</b></td>
-      <td className="text-center"><b>7</b></td>
-      <td className="text-center"><b>12</b></td>
-    </tr>
+    {constructors}
   </tbody>
 </table>
   )
