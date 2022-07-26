@@ -10,12 +10,12 @@ export default function App() {
 
       <nav>
         <ul className="tab tab-block ">
-          <li className="tab-item text-dark active">
+          <li className="tab-item text-dark">
             <Link to="/drivers" className='MenuLink'>Drivers</Link>
           </li>
-           <li className="tab-item text-dark">
+          <li className='tab-item text-dark'>
             <Link to="/constructors" className='MenuLink'>Constructors</Link>
-           </li>
+          </li>
         </ul>
       </nav>
       <Outlet />
