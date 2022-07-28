@@ -5,29 +5,25 @@ import LoadingIndicator from "./LoadingIndicator";
 export default function ConstructorsPage() {
   const [allConstructors, setAllConstructors] = React.useState(null);
 
- const loadConstructors = async () => {
-    const options = {
-     
-  };
+  const loadConstructors = async () => {
+    const options = {};
 
-  const url = `http://ergast.com/api/f1/constructorStandings.json`;
+    const url = `http://ergast.com/api/f1/constructorStandings.json`;
 
-  const response = await fetch(url, options);
+    const response = await fetch(url, options);
 
-  const constructors = await response.json();
+    const constructors = await response.json();
     setAllConstructors(constructors);
     return;
-  }
+  };
 
   React.useEffect(() => {
     loadConstructors();
   }, []);
 
-  if(!allConstructors) {
+  if (!allConstructors) {
     return <LoadingIndicator />;
   }
 
-  return (
-    <ConstructorsTable constructors={allConstructors} />
-  );
+  return <ConstructorsTable constructors={allConstructors} />;
 }

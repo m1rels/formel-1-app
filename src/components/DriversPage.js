@@ -4,30 +4,26 @@ import LoadingIndicator from "./LoadingIndicator";
 
 export default function DriversPage() {
   const [allDrivers, setAllDrivers] = React.useState(null);
- const loadDrivers = async () => {
-    const options = {
-     
-  };
+  const loadDrivers = async () => {
+    const options = {};
 
-  const url = `http://ergast.com/api/f1/driverStandings.json`;
+    const url = `http://ergast.com/api/f1/driverStandings.json`;
 
-  const response = await fetch(url, options);
+    const response = await fetch(url, options);
 
-  const drivers = await response.json();
+    const drivers = await response.json();
     setAllDrivers(drivers);
     return;
-  }
+  };
 
   React.useEffect(() => {
     loadDrivers();
   }, []);
 
   console.log(allDrivers);
-  if(!allDrivers) {
+  if (!allDrivers) {
     return <LoadingIndicator />;
   }
 
-  return (
-    <DriversTable drivers={allDrivers} />
-  );
+  return <DriversTable drivers={allDrivers} />;
 }

@@ -5,29 +5,25 @@ import LoadingIndicator from "./LoadingIndicator";
 export default function SeasonsPage() {
   const [allSeasons, setAllSeasons] = React.useState(null);
 
- const loadSeasons = async () => {
-    const options = {
-     
-  };
+  const loadSeasons = async () => {
+    const options = {};
 
-  const url = `http://ergast.com/api/f1/seasons.json`;
+    const url = `http://ergast.com/api/f1/seasons.json`;
 
-  const response = await fetch(url, options);
+    const response = await fetch(url, options);
 
-  const seasons = await response.json();
+    const seasons = await response.json();
     setAllSeasons(seasons);
     return;
-  }
+  };
 
   React.useEffect(() => {
     loadSeasons();
   }, []);
 
-  if(!allSeasons) {
+  if (!allSeasons) {
     return <LoadingIndicator />;
   }
 
-  return (
-    <SeasonsTable seasons={allSeasons} />
-  );
+  return <SeasonsTable seasons={allSeasons} />;
 }
