@@ -23,13 +23,13 @@ export default function SeasonList() {
   allSeasons.forEach((season) => {
     console.log(season)
     seasons.push(
-    <React.Fragment>
-      <h3>{season.season}</h3>
-      <li key={season.season} className="nav-item">
-        <Link to={`/seasons/${season.season}`}>Drivers</Link>
+    <React.Fragment key={season.season}>
+      <h3 className="m-1 mt-2">{season.season}</h3>
+      <li>
+        <Link to={`/seasons/${season.season}/drivers`}>Drivers</Link>
       </li>
-      <li key={season.season} className="nav-item">
-        <Link to={`/seasons/${season.season}`}>Constructors</Link>
+      <li>
+        <Link to={`/seasons/${season.season}/constructors`}>Constructors</Link>
       </li>
       </React.Fragment>
     );
