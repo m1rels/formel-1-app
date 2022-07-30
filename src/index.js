@@ -15,10 +15,8 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
-        <Route path="/seasons" element={<SeasonsPage />} >
-        <Route path="/seasons/drivers" element={<DriversPage />} />
-        <Route path="/seasons/constructors" element={<ConstructorsPage />} /> 
-        </Route>
+        <Route path="/seasons" element={<SeasonList />} ></Route>
+        <Route path="/seasons/:year" element={<Season />} ></Route>
       </Route>
     </Routes>
   </BrowserRouter>
