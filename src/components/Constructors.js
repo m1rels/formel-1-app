@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
+import {Link} from "react-router-dom";
 
 export default function Constructors() {
     const { year } = useParams();
@@ -15,6 +16,7 @@ export default function Constructors() {
             const result = constructors.MRData.StandingsTable.StandingsLists;
     
             if (constructors.MRData.StandingsTable.StandingsLists.length) {
+              console.log("result", result);
                 setAllConstructors(result[0].ConstructorStandings);
                 return;
             }
@@ -34,7 +36,7 @@ export default function Constructors() {
     constructors.push(
       <tr key={constructor.Constructor.constructorId}>
         <td className="text-center">{constructor.position}</td>
-        <td>{constructor.Constructor.name}</td>
+        <td><Link to={`/constructors/${constructor.Constructor.constructorId}`}>{constructor.Constructor.name}</Link></td>
         <td className="text-center">{constructor.points}</td>
         <td className="text-center">{constructor.wins}</td>
       </tr>

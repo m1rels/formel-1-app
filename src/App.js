@@ -10,7 +10,7 @@ export default function App() {
         <h1>F1</h1>
         <ul className="nav">
           <li className="nav-item active">
-            <Link to="/seasons" className="nav">
+            <Link to="/seasons">
               Seasons
             </Link>
           </li>

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
+import {Link} from "react-router-dom";
 
 export default function Drivers() {
     const { year } = useParams();
@@ -12,7 +13,9 @@ export default function Drivers() {
         const url = `http://ergast.com/api/f1/${year}/driverStandings.json`;
         const response = await fetch(url, options);
         const drivers = await response.json();
+        console.log(drivers);
         const result = drivers.MRData.StandingsTable.StandingsLists;
+        console.log("driver", result);
 
         if (drivers.MRData.StandingsTable.StandingsLists.length) {
             setAllDrivers(result[0].DriverStandings);
@@ -34,7 +37,7 @@ export default function Drivers() {
     drivers.push(
       <tr key={driver.Driver.driverId}>
         <td className="text-center">{driver.position}</td>
-        <td>{driver.Driver.givenName + " " + driver.Driver.familyName}</td>
+        <td><Link to={`/drivers/${driver.Driver.driverId}`}>{driver.Driver.givenName + " " + driver.Driver.familyName}</Link></td>
         <td className="text-center">{driver.points}</td>
         <td className="text-center">{driver.wins}</td>
       </tr>
