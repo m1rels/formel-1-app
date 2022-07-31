@@ -21,7 +21,6 @@ export default function SeasonList() {
 
   const seasons = [];
   allSeasons.forEach((season) => {
-    console.log(season)
     seasons.push(
     <React.Fragment key={season.season}>
       <h3 className="m-1 mt-2">{season.season}</h3>
@@ -30,6 +29,9 @@ export default function SeasonList() {
       </li>
       <li>
         <Link to={`/seasons/${season.season}/constructors`}>Constructors</Link>
+      </li>
+      <li>
+        <Link to={`/seasons/${season.season}/races`}>Race Schedule</Link>
       </li>
       </React.Fragment>
     );
