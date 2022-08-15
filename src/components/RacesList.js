@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
+
 
 export default function RacesList() {
     const { year } = useParams();
@@ -33,25 +34,26 @@ export default function RacesList() {
       const raceDetails = [];
       allRaces.forEach((race) => {
         raceDetails.push(
-            <tr key={race.round}><td className="text-normal column col-1 text-center">{race.round}</td>
+        <tr key={race.round}><td className="text-normal column col-1 text-center">{race.round}</td>
                 <td className="text-normal column col-1"><a href={race.url}>{race.raceName}</a></td>
                 <td className="text-normal column col-1 text-center">{race.date}</td>
-                <td className="text-normal column col-1">{race.Circuit.circuitName}</td>
+                <td className="text-normal column col-1"><Link to={`/circuits/${race.Circuit.circuitId}`}>{race.Circuit.circuitName}</Link></td>
                 </tr>
-        );
+                );
       });
     
      
       return (
             <React.Fragment>
-              <h2>Drivers</h2>
+              <h2>Race Schedule</h2>
               <table className="table">
                 <thead>
                   <tr>
                     <th className="text-normal column col-1 text-center">Round</th>
                     <th className="text-normal column col-5">Race Name</th>
                     <th className="text-normal column col-2 text-center">Date</th>
-                    <th className="text-normal column col-2">Circuit</th>                  </tr>
+                    <th className="text-normal column col-2">Circuit</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {raceDetails}

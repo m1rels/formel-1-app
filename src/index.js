@@ -5,24 +5,23 @@ import App from "./App";
 import "./index.css";
 import Drivers from "./components/Drivers";
 import Constructors from "./components/Constructors";
-import SeasonList from "./components/SeasonList";
 import Driver from "./components/Driver";
 import Constructor from "./components/Constructor";
 import RacesList from "./components/RacesList";
+import Circuit from "./components/Circuit";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />}>
-        <Route path="/seasons" element={<SeasonList />} />
+        <Route path="/seasons" element={<App />}/>
         <Route path="/seasons/:year/drivers" element={<Drivers />} />
         <Route path="/seasons/:year/constructors" element={<Constructors />} />
         <Route path="/drivers/:driverId" element={<Driver />} />
         <Route path="/constructors/:constructorId" element={<Constructor />} />
         <Route path="/seasons/:year/races" element={<RacesList />} />
-      </Route>
+        <Route path="/circuits/:circuitId" element={<Circuit />} />
     </Routes>
   </BrowserRouter>
 );
