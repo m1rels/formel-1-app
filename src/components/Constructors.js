@@ -10,20 +10,28 @@ export default function Constructors() {
     useEffect(() => {
         const loadConstructors = async () => {
             const options = {};
-            const url = `http://ergast.com/api/f1/${year}/constructorStandings.json`;
-            const response = await fetch(url, options);
-            const constructors = await response.json();
-            const result = constructors.MRData.StandingsTable.StandingsLists;
-    
-            if (constructors.MRData.StandingsTable.StandingsLists.length) {
-              console.log("result", result);
-                setAllConstructors(result[0].ConstructorStandings);
-                return;
+            if(localStorage.getItem("allConstructors") === null) {
+
+              const url = `http://ergast.com/api/f1/${year}/constructorStandings.json`;
+              const response = await fetch(url, options);
+              const constructors = await response.json();
+              const result = constructors.MRData.StandingsTable.StandingsLists;
+              setAllConstructors(result[0].ConstructorStandings);
+              localStorage.setItem("allConstructors", JSON.stringify(result[0].ConstructorStandings));
+              return;
+
+            } else {
+
+              const saved = localStorage.getItem("allConstructors");
+              const initialValue = JSON.parse(saved);
+              return setAllConstructors(initialValue);
+
             }
-            setAllConstructors([])
-            return;
+           
+           
           };
         loadConstructors();
+
       }, []);
 
       if (!allConstructors) {

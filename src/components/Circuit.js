@@ -9,19 +9,20 @@ export default function Circuit() {
   useEffect(() => {
     const loadCircuit = async () => {
         const options = {};
-        const url = `http://ergast.com/api/f1/circuits/${circuitId}.json`;
+        if (localStorage.getItem("cirucitStandings") === null) {
+          const url = `http://ergast.com/api/f1/circuits/${circuitId}.json`;
         const response = await fetch(url, options);
         const circuit = await response.json();
-        console.log(circuit);
         const result = circuit.MRData.CircuitTable.Circuits;
-        console.log("circuit", result);
-
-        if (result.length) {
-            setCircuitStandings(result);
-            return;
+        setCircuitStandings(result);
+        localStorage.setItem("circuitStandings", JSON.stringify(result));
+        return;
+        } else {
+          const saved = localStorage.getItem("circuitStandings");
+          const initialValue = JSON.parse(saved);
+          return setCircuitStandings(initialValue);
         }
-
-        setCircuitStandings([])
+        
       };
     loadCircuit();
   }, []);

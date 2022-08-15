@@ -4,26 +4,37 @@ import { useParams } from "react-router-dom";
 
 export default function Driver() {
   const { driverId } = useParams();
-    const [driverStandings, setDriverStandings] = useState(null);
+  const [driverStandings, setDriverStandings] = useState(null);
 
   useEffect(() => {
     const loadDriver = async () => {
         const options = {};
-        const url = `http://ergast.com/api/f1/drivers/${driverId}.json`;
-        const response = await fetch(url, options);
-        const driver = await response.json();
-        console.log(driver);
-        const result = driver.MRData.DriverTable.Drivers;
-        console.log("driver", result);
 
-        if (result.length) {
-            setDriverStandings(result[0]);
-            return;
+
+        if (localStorage.getItem("driverStandings") === null) {
+
+          const url = `http://ergast.com/api/f1/drivers/${driverId}.json`;
+          const response = await fetch(url, options);
+          const driver = await response.json();
+          const result = driver.MRData.DriverTable.Drivers;
+          setDriverStandings(result[0]);
+          console.log("Test", result[0]);
+          localStorage.setItem("driverStandings", JSON.stringify(result[0]));
+          return;
+
+        } else {
+
+          const saved = localStorage.getItem("driverStandings");
+          const initialValue = JSON.parse(saved);
+          return setDriverStandings(initialValue) || "";
+
         }
 
-        setDriverStandings([])
+  
       };
     loadDriver();
+    
+
   }, []);
 
   if (!driverStandings) {
@@ -31,9 +42,8 @@ export default function Driver() {
   }
 
     return(
-      <ul className="nav">
-      <li className="nav-item active">
-        <a href="#">{driverStandings.givenName + " " + driverStandings.familyName}</a>
+      <React.Fragment>
+        <h2>{driverStandings.givenName + " " + driverStandings.familyName}</h2>
         <ul className="nav">
           <li className="nav-item">
             Birth of Date: {driverStandings.dateOfBirth}
@@ -42,10 +52,9 @@ export default function Driver() {
             Nationality: {driverStandings.nationality}
           </li>
           <li className="nav-item">
-            More Information: <a href={driverStandings.url}>Wikipedia</a>
+            More Information:<a href={driverStandings.url}>Wikipedia</a>
           </li>
         </ul>
-      </li>
-    </ul>
+      </React.Fragment>
     );
 }

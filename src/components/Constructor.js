@@ -9,21 +9,25 @@ export default function Constructor() {
   useEffect(() => {
     const loadConstructor = async () => {
         const options = {};
-        const url = `http://ergast.com/api/f1/constructors/${constructorId}.json`;
-        const response = await fetch(url, options);
-        const constructor = await response.json();
-        console.log(constructor);
-        const result = constructor.MRData.ConstructorTable.Constructors;
-        console.log("constructor", result);
+        if (localStorage.getItem("constructorStandings") === null) {
+          const url = `http://ergast.com/api/f1/constructors/${constructorId}.json`;
+          const response = await fetch(url, options);
+          const constructor = await response.json();
+          const result = constructor.MRData.ConstructorTable.Constructors;
+          setConstructorStandings(result[0]);
+          localStorage.setItem("construtorStandings", JSON.stringify(result[0]));
+          return;
+        } else {
 
-        if (result.length) {
-            setConstructorStandings(result[0]);
-            return;
+          const saved = localStorage.getItem("constructorStandings")
+          const initialValue = JSON.parse(saved);
+          return setConstructorStandings(initialValue);
+
         }
 
-        setConstructorStandings([])
       };
     loadConstructor();
+   
   }, []);
 
   if (!constructorStandings) {
@@ -31,9 +35,8 @@ export default function Constructor() {
   }
 
     return(
-      <ul className="nav">
-      <li className="nav-item active">
-        <a href="#">{constructorStandings.name}</a>
+      <React.Fragment>
+        <h2>{constructorStandings.name}</h2>
         <ul className="nav">
           <li className="nav-item">
             Nationality: {constructorStandings.nationality}
@@ -42,7 +45,6 @@ export default function Constructor() {
             More Information: <a href={constructorStandings.url}>Wikipedia</a>
           </li>
         </ul>
-      </li>
-    </ul>
+      </React.Fragment>
     );
 }

@@ -5,13 +5,28 @@ import LoadingIndicator from "./components/LoadingIndicator";
 import { Link } from "react-router-dom";
 
 export default function App() {
-  const [allSeasons, setAllSeasons] = React.useState([]);
+  const [allSeasons, setAllSeasons] = React.useState(null);
 
   React.useEffect(() => {
     async function loadData () {
+
+      if (localStorage.getItem("allSeasons") === null) {
+
         const response = await fetch(`http://ergast.com/api/f1/seasons.json?limit=100`, {});
         const seasons = await response.json();
         setAllSeasons(seasons.MRData.SeasonTable.Seasons);
+        console.log("Season", seasons.MRData.SeasonTable.Seasons)
+        localStorage.setItem("allSeasons", JSON.stringify(seasons.MRData.SeasonTable.Seasons));
+        return;
+
+      } else {
+
+        const saved = localStorage.getItem("allSeasons")
+        const initialValue = JSON.parse(saved);
+        return setAllSeasons(initialValue);
+
+      }
+        
     }
     loadData();
   }, []);

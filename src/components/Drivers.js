@@ -10,21 +10,31 @@ export default function Drivers() {
   useEffect(() => {
     const loadDrivers = async () => {
         const options = {};
-        const url = `http://ergast.com/api/f1/${year}/driverStandings.json`;
-        const response = await fetch(url, options);
-        const drivers = await response.json();
-        console.log(drivers);
-        const result = drivers.MRData.StandingsTable.StandingsLists;
-        console.log("driver", result);
 
-        if (drivers.MRData.StandingsTable.StandingsLists.length) {
-            setAllDrivers(result[0].DriverStandings);
-            return;
+        if (localStorage.getItem("allDrivers") === null) {
+
+          const url = `http://ergast.com/api/f1/${year}/driverStandings.json`;
+          const response = await fetch(url, options);
+          const drivers = await response.json();
+          const result = drivers.MRData.StandingsTable.StandingsLists;
+          setAllDrivers(result[0].DriverStandings);
+          console.log("Hallo", result[0].DriverStandings);
+          localStorage.setItem("allDrivers", JSON.stringify(result[0].DriverStandings));
+          return;
+
+        } else {
+
+          const saved = localStorage.getItem("allDrivers");
+          const initialValue = JSON.parse(saved);
+          return setAllDrivers(initialValue) || "";
+
         }
+        
 
-        setAllDrivers([])
       };
+
     loadDrivers();
+
   }, []);
 
   if (!allDrivers) {

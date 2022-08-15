@@ -5,28 +5,31 @@ import LoadingIndicator from "./LoadingIndicator";
 
 export default function RacesList() {
     const { year } = useParams();
-    const [allRaces, setAllRaces] = useState(null);
+    const [allRaces, setAllRaces] = useState(null)
 
     useEffect(() => {
         const loadRaces = async () => {
             const options = {};
-            const url = `http://ergast.com/api/f1/${year}.json`;
-            const response = await fetch(url, options);
-            const races = await response.json();
-            console.log(races);
-            const result = races.MRData.RaceTable.Races;
-    
-            if (result) {
-                setAllRaces(result);
-                return;
+            if (localStorage.getItem("allRaces") === null) {
+              const url = `http://ergast.com/api/f1/${year}.json`;
+              const response = await fetch(url, options);
+              const races = await response.json();
+              const result = races.MRData.RaceTable.Races;
+              setAllRaces(result);
+              localStorage.setItem("allRaces", JSON.stringify(result));
+              return;
+            } else {
+              const saved = localStorage.getItem("allRaces");
+              const initialValue = JSON.parse(saved);
+              return setAllRaces(initialValue);
             }
-    
-            setAllRaces([]);
+           
           };
         loadRaces();
+
       }, []);
 
-    
+  
       if (!allRaces) {
         return <LoadingIndicator />;
       }
@@ -41,11 +44,11 @@ export default function RacesList() {
                 </tr>
                 );
       });
-    
-     
+ 
+
       return (
             <React.Fragment>
-              <h2>Race Schedule</h2>
+              <h2>Race Schedule of</h2>
               <table className="table">
                 <thead>
                   <tr>
