@@ -17,12 +17,12 @@ export default function Circuit() {
           const circuit = await response.json();
           const result = circuit.MRData.CircuitTable.Circuits;
           setCircuitStandings(result);
-          localStorage.setItem("circuitStandings - " + circuitId, JSON.stringify(result));
+          localStorage.setItem("circuits/" + circuitId, JSON.stringify(result));
           return;
 
         } else {
 
-            const saved = localStorage.getItem("circuitStandings - " + circuitId);
+            const saved = localStorage.getItem("circuits/" + circuitId);
             const initialValue = JSON.parse(saved);
             return setCircuitStandings(initialValue);
 

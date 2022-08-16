@@ -10,18 +10,18 @@ export default function App() {
   React.useEffect(() => {
     async function loadData () {
 
-      if (localStorage.getItem("allSeasons") === null) {
+      if (localStorage.getItem("seasons") === null) {
 
         const response = await fetch(`http://ergast.com/api/f1/seasons.json?limit=100`, {});
         const seasons = await response.json();
         setAllSeasons(seasons.MRData.SeasonTable.Seasons);
         console.log("Season", seasons.MRData.SeasonTable.Seasons)
-        localStorage.setItem("allSeasons", JSON.stringify(seasons.MRData.SeasonTable.Seasons));
+        localStorage.setItem("seasons", JSON.stringify(seasons.MRData.SeasonTable.Seasons));
         return;
 
       } else {
 
-        const saved = localStorage.getItem("allSeasons")
+        const saved = localStorage.getItem("seasons")
         const initialValue = JSON.parse(saved);
         return setAllSeasons(initialValue);
 

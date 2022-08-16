@@ -17,12 +17,12 @@ export default function Constructors() {
               const constructors = await response.json();
               const result = constructors.MRData.StandingsTable.StandingsLists;
               setAllConstructors(result[0].ConstructorStandings);
-              localStorage.setItem("allConstructors - " + year, JSON.stringify(result[0].ConstructorStandings));
+              localStorage.setItem("constructors/" + year, JSON.stringify(result[0].ConstructorStandings));
               return;
 
             } else {
 
-              const saved = localStorage.getItem("allConstructors - " + year);
+              const saved = localStorage.getItem("constructors/" + year);
               const initialValue = JSON.parse(saved);
               return setAllConstructors(initialValue);
 

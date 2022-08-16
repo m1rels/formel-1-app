@@ -16,10 +16,10 @@ export default function RacesList() {
               const races = await response.json();
               const result = races.MRData.RaceTable.Races;
               setAllRaces(result);
-              localStorage.setItem("allRaces - " + year, JSON.stringify(result));
+              localStorage.setItem("races/" + year, JSON.stringify(result));
               return;
             } else {
-              const saved = localStorage.getItem("allRaces - " + year);
+              const saved = localStorage.getItem("races/" + year);
               const initialValue = JSON.parse(saved);
               return setAllRaces(initialValue);
             }

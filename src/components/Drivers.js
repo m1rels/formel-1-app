@@ -19,12 +19,12 @@ export default function Drivers() {
           const result = drivers.MRData.StandingsTable.StandingsLists;
           setAllDrivers(result[0].DriverStandings);
           console.log("Hallo", result);
-          localStorage.setItem("allDrivers - " + year, JSON.stringify(result[0].DriverStandings));
+          localStorage.setItem("drivers/" + year, JSON.stringify(result[0].DriverStandings));
           return;
 
         } else {
 
-          const saved = localStorage.getItem("allDrivers - " + year);
+          const saved = localStorage.getItem("drivers" + year);
           const initialValue = JSON.parse(saved);
           return setAllDrivers(initialValue) || "";
 
