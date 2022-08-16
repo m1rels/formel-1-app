@@ -9,29 +9,35 @@ export default function Circuit() {
   useEffect(() => {
     const loadCircuit = async () => {
         const options = {};
-        if (localStorage.getItem("cirucitStandings") === null) {
+
+        if (localStorage.getItem("circuitStandings") === null) {
+
           const url = `http://ergast.com/api/f1/circuits/${circuitId}.json`;
-        const response = await fetch(url, options);
-        const circuit = await response.json();
-        const result = circuit.MRData.CircuitTable.Circuits;
-        setCircuitStandings(result);
-        localStorage.setItem("circuitStandings", JSON.stringify(result));
-        return;
+          const response = await fetch(url, options);
+          const circuit = await response.json();
+          const result = circuit.MRData.CircuitTable.Circuits;
+          setCircuitStandings(result);
+          localStorage.setItem("circuitStandings", JSON.stringify(result));
+          return;
+
         } else {
-          const saved = localStorage.getItem("circuitStandings");
-          const initialValue = JSON.parse(saved);
-          return setCircuitStandings(initialValue);
+
+            const saved = localStorage.getItem("circuitStandings");
+            const initialValue = JSON.parse(saved);
+            return setCircuitStandings(initialValue);
+
         }
         
       };
+
     loadCircuit();
+
   }, []);
 
   if (!circuitStandings) {
     return <LoadingIndicator />;
   }
 
-  console.log("circuit", circuitStandings);
 
   return (
     <React.Fragment>
@@ -48,7 +54,6 @@ export default function Circuit() {
           </li>
         </ul>
     </React.Fragment>
-    
   )
 
   
