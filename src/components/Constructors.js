@@ -37,6 +37,7 @@ export default function Constructors() {
       if (!allConstructors) {
         return <LoadingIndicator />;
       }
+      console.log(allConstructors);
 
       const constructors = [];
 

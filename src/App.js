@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export default function App() {
   const [allSeasons, setAllSeasons] = React.useState(null);
-
+  
   React.useEffect(() => {
     async function loadData () {
 
@@ -31,28 +31,49 @@ export default function App() {
     loadData();
   }, []);
 
+
+
   if (!allSeasons) {
     return <LoadingIndicator />;
   }
 
 
   const seasons = [];
-  allSeasons.forEach((season) => {
-    seasons.push(
-    <React.Fragment key={season.season}>
-      <h3 className="m-1 mt-2">{season.season}</h3>
+
+for(let i=0; i<8; i++) {
+  seasons.push(
+    <React.Fragment key={allSeasons[i].season}>
+      <h3 className="m-1 mt-2">{allSeasons[i].season}</h3>
       <li>
-        <Link to={`/seasons/${season.season}/drivers`}>Drivers</Link>
+        <Link to={`/seasons/${allSeasons[i].season}/drivers`}>Drivers</Link>
       </li>
       <li>
-        <Link to={`/seasons/${season.season}/constructors`}>Constructors</Link>
+        <Link to={`/seasons/${allSeasons[i].season}/races`}>Race Schedule</Link>
+      </li>
+      </React.Fragment>
+  )
+
+} 
+
+for(let i=8; i<73; i++) {
+  
+  seasons.push(
+    <React.Fragment key={allSeasons[i].season}>
+      <h3 className="m-1 mt-2">{allSeasons[i].season}</h3>
+      <li>
+        <Link to={`/seasons/${allSeasons[i].season}/drivers`}>Drivers</Link>
       </li>
       <li>
-        <Link to={`/seasons/${season.season}/races`}>Race Schedule</Link>
+        <Link to={`/seasons/${allSeasons[i].season}/constructors`}>Constructors</Link>
+      </li>
+      <li>
+        <Link to={`/seasons/${allSeasons[i].season}/races`}>Race Schedule</Link>
       </li>
       </React.Fragment>
     );
-  });
+}
 
-  return seasons;
+  
+    return seasons;
+
 }
