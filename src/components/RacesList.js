@@ -48,7 +48,7 @@ export default function RacesList() {
 
       return (
             <React.Fragment>
-              <h2>Race Schedule of</h2>
+              <h2>Race Schedule of {year}</h2>
               <table className="table">
                 <thead>
                   <tr>

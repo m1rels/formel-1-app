@@ -10,16 +10,18 @@ export default function Constructor() {
     const loadConstructor = async () => {
         const options = {};
         if (localStorage.getItem("constructorStandings") === null) {
+
           const url = `http://ergast.com/api/f1/constructors/${constructorId}.json`;
           const response = await fetch(url, options);
           const constructor = await response.json();
           const result = constructor.MRData.ConstructorTable.Constructors;
           setConstructorStandings(result[0]);
-          localStorage.setItem("construtorStandings", JSON.stringify(result[0]));
+          localStorage.setItem("construtorStandings - " + constructorId, JSON.stringify(result[0]));
           return;
+
         } else {
 
-          const saved = localStorage.getItem("constructorStandings")
+          const saved = localStorage.getItem("constructorStandings - " + constructorId)
           const initialValue = JSON.parse(saved);
           return setConstructorStandings(initialValue);
 

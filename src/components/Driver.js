@@ -18,13 +18,12 @@ export default function Driver() {
           const driver = await response.json();
           const result = driver.MRData.DriverTable.Drivers;
           setDriverStandings(result[0]);
-          console.log("Test", result[0]);
-          localStorage.setItem("driverStandings", JSON.stringify(result[0]));
+          localStorage.setItem("driverStandings- " + driverId, JSON.stringify(result[0]));
           return;
 
         } else {
 
-          const saved = localStorage.getItem("driverStandings");
+          const saved = localStorage.getItem("driverStandings- " + driverId);
           const initialValue = JSON.parse(saved);
           return setDriverStandings(initialValue) || "";
 
