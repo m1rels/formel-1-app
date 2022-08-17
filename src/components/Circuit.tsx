@@ -4,7 +4,7 @@ import LoadingIndicator from "./LoadingIndicator";
 
 export default function Circuit() {
     const { circuitId } = useParams();
-    const [circuitStandings, setCircuitStandings] = useState(null);
+    const [circuitStandings, setCircuitStandings] = useState([]);
 
   useEffect(() => {
     const loadCircuit = async () => {
@@ -14,7 +14,7 @@ export default function Circuit() {
 
           const url = `http://ergast.com/api/f1/circuits/${circuitId}.json`;
           const response = await fetch(url, options);
-          const circuit = await response.json();
+          const circuit: any = await response.json();
           const result = circuit.MRData.CircuitTable.Circuits;
           setCircuitStandings(result);
           localStorage.setItem("circuits/" + circuitId, JSON.stringify(result));
@@ -23,8 +23,12 @@ export default function Circuit() {
         } else {
 
             const saved = localStorage.getItem("circuits/" + circuitId);
-            const initialValue = JSON.parse(saved);
-            return setCircuitStandings(initialValue);
+            if (saved) {
+              const initialValue = JSON.parse(saved);
+              setCircuitStandings(initialValue);
+            }
+        
+            return;
 
         }
         
@@ -41,16 +45,16 @@ export default function Circuit() {
 
   return (
     <React.Fragment>
-      <h2>{circuitStandings[0].circuitName}</h2>
+      <h2>{(circuitStandings[0] as any).circuitName}</h2>
         <ul className="nav">
           <li className="nav-item">
-            Country: {circuitStandings[0].Location.country}
+            Country: {(circuitStandings[0] as any).Location.country}
           </li>
           <li className="nav-item">
-            Locality: {circuitStandings[0].Location.locality}
+            Locality: {(circuitStandings[0] as any).Location.locality}
           </li>
           <li className="nav-item">
-            More Information:<a href={circuitStandings[0].url}>Wikipedia</a>
+            More Information:<a href={(circuitStandings[0] as any).url}>Wikipedia</a>
           </li>
         </ul>
     </React.Fragment>

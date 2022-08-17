@@ -2,10 +2,11 @@ import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 import {Link} from "react-router-dom";
+import { ConstructorStanding, Root } from "../interfaces/Constructors";
 
 export default function Constructors() {
     const { year } = useParams();
-    const [allConstructors, setAllConstructors] = useState(null);
+    const [allConstructors, setAllConstructors] = useState<ConstructorStanding[] | undefined>(undefined);
 
     useEffect(() => {
         const loadConstructors = async () => {
@@ -14,7 +15,7 @@ export default function Constructors() {
 
               const url = `http://ergast.com/api/f1/${year}/constructorStandings.json`;
               const response = await fetch(url, options);
-              const constructors = await response.json();
+              const constructors: Root = await response.json();
               const result = constructors.MRData.StandingsTable.StandingsLists;
               setAllConstructors(result[0].ConstructorStandings);
               localStorage.setItem("constructors/" + year, JSON.stringify(result[0].ConstructorStandings));
@@ -23,8 +24,10 @@ export default function Constructors() {
             } else {
 
               const saved = localStorage.getItem("constructors/" + year);
-              const initialValue = JSON.parse(saved);
-              return setAllConstructors(initialValue);
+              if (saved) {
+                const initialValue = JSON.parse(saved);
+                setAllConstructors(initialValue);
+              }
 
             }
            
@@ -39,7 +42,7 @@ export default function Constructors() {
       }
       console.log(allConstructors);
 
-      const constructors = [];
+      const constructors: JSX.Element[] = [];
 
   allConstructors.forEach((constructor) => {
     constructors.push(

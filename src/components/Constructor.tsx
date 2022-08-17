@@ -22,8 +22,12 @@ export default function Constructor() {
         } else {
 
           const saved = localStorage.getItem("constructors/" + constructorId)
-          const initialValue = JSON.parse(saved);
-          return setConstructorStandings(initialValue);
+          if (saved) {
+            const initialValue = JSON.parse(saved);
+            setConstructorStandings(initialValue);
+          }
+
+          return;
 
         }
 
@@ -38,13 +42,13 @@ export default function Constructor() {
 
     return(
       <React.Fragment>
-        <h2>{constructorStandings.name}</h2>
+        <h2>{(constructorStandings as any).name}</h2>
         <ul className="nav">
           <li className="nav-item">
-            Nationality: {constructorStandings.nationality}
+            Nationality: {(constructorStandings as any).nationality}
           </li>
           <li className="nav-item">
-            More Information: <a href={constructorStandings.url}>Wikipedia</a>
+            More Information: <a href={(constructorStandings as any).url}>Wikipedia</a>
           </li>
         </ul>
       </React.Fragment>

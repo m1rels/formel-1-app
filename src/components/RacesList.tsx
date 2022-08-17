@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import { useParams, Link } from "react-router-dom";
+import { Race, Root } from "../interfaces/Races";
 import LoadingIndicator from "./LoadingIndicator";
 
 
 export default function RacesList() {
     const { year } = useParams();
-    const [allRaces, setAllRaces] = useState(null)
+    const [allRaces, setAllRaces] = useState<Race[] | undefined>(undefined)
 
     useEffect(() => {
         const loadRaces = async () => {
@@ -13,15 +14,17 @@ export default function RacesList() {
             if (localStorage.getItem("allRaces") === null) {
               const url = `http://ergast.com/api/f1/${year}.json`;
               const response = await fetch(url, options);
-              const races = await response.json();
+              const races: Root = await response.json();
               const result = races.MRData.RaceTable.Races;
               setAllRaces(result);
               localStorage.setItem("races/" + year, JSON.stringify(result));
               return;
             } else {
               const saved = localStorage.getItem("races/" + year);
-              const initialValue = JSON.parse(saved);
-              return setAllRaces(initialValue);
+              if (saved) {
+                const initialValue = JSON.parse(saved);
+                setAllRaces(initialValue);
+              }
             }
            
           };
@@ -34,8 +37,9 @@ export default function RacesList() {
         return <LoadingIndicator />;
       }
 
-      const raceDetails = [];
-      allRaces.forEach((race) => {
+      const raceDetails: JSX.Element[] = [];
+
+      allRaces.forEach((race): void => {
         raceDetails.push(
         <tr key={race.round}><td className="text-normal column col-1 text-center">{race.round}</td>
                 <td className="text-normal column col-1"><a href={race.url}>{race.raceName}</a></td>

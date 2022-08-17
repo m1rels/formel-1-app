@@ -1,19 +1,20 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import "./styles.css";
 import "./App.css";
 import LoadingIndicator from "./components/LoadingIndicator";
 import { Link } from "react-router-dom";
+import { Root, Season } from "./interfaces/Seasons";
 
-export default function App() {
-  const [allSeasons, setAllSeasons] = React.useState(null);
+export default function App(): JSX.Element {
+  const [allSeasons, setAllSeasons] = React.useState<Season[] | undefined>(undefined);
   
   React.useEffect(() => {
     async function loadData () {
 
       if (localStorage.getItem("seasons") === null) {
 
-        const response = await fetch(`http://ergast.com/api/f1/seasons.json?limit=100`, {});
-        const seasons = await response.json();
+        const response = await fetch(`http://localhost:8081/seasons`, {});
+        const seasons: Root = await response.json();
         setAllSeasons(seasons.MRData.SeasonTable.Seasons);
         console.log("Season", seasons.MRData.SeasonTable.Seasons)
         localStorage.setItem("seasons", JSON.stringify(seasons.MRData.SeasonTable.Seasons));
@@ -22,8 +23,11 @@ export default function App() {
       } else {
 
         const saved = localStorage.getItem("seasons")
-        const initialValue = JSON.parse(saved);
-        return setAllSeasons(initialValue);
+        if (saved) {
+          const initialValue = JSON.parse(saved);
+          setAllSeasons(initialValue);
+        }
+        return;
 
       }
         
@@ -38,7 +42,7 @@ export default function App() {
   }
 
 
-  const seasons = [];
+  const seasons: ReactElement<any, any>[] = [];
 
 for(let i=0; i<8; i++) {
   seasons.push(
@@ -74,6 +78,5 @@ for(let i=8; i<73; i++) {
 }
 
   
-    return seasons;
-
+    return <React.Fragment>{seasons}</React.Fragment>;
 }

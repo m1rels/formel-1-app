@@ -10,7 +10,6 @@ export default function Driver() {
     const loadDriver = async () => {
         const options = {};
 
-
         if (localStorage.getItem("driverStandings") === null) {
 
           const url = `http://ergast.com/api/f1/drivers/${driverId}.json`;
@@ -24,8 +23,10 @@ export default function Driver() {
         } else {
 
           const saved = localStorage.getItem("drivers/" + driverId);
-          const initialValue = JSON.parse(saved);
-          return setDriverStandings(initialValue) || "";
+          if (saved) {
+            const initialValue = JSON.parse(saved);
+            setDriverStandings(initialValue);
+          }
 
         }
 
@@ -42,16 +43,16 @@ export default function Driver() {
 
     return(
       <React.Fragment>
-        <h2>{driverStandings.givenName + " " + driverStandings.familyName}</h2>
+        <h2>{(driverStandings as any).givenName + " " + (driverStandings as any).familyName}</h2>
         <ul className="nav">
           <li className="nav-item">
-            Birth of Date: {driverStandings.dateOfBirth}
+            Birth of Date: {(driverStandings as any).dateOfBirth}
           </li>
           <li className="nav-item">
-            Nationality: {driverStandings.nationality}
+            Nationality: {(driverStandings as any).nationality}
           </li>
           <li className="nav-item">
-            More Information:<a href={driverStandings.url}>Wikipedia</a>
+            More Information:<a href={(driverStandings as any).url}>Wikipedia</a>
           </li>
         </ul>
       </React.Fragment>
