@@ -14,10 +14,9 @@ export default function App(): JSX.Element {
       if (localStorage.getItem("seasons") === null) {
 
         const response = await fetch(`http://localhost:8081/seasons`, {});
-        const seasons: Root = await response.json();
-        setAllSeasons(seasons.MRData.SeasonTable.Seasons);
-        console.log("Season", seasons.MRData.SeasonTable.Seasons)
-        localStorage.setItem("seasons", JSON.stringify(seasons.MRData.SeasonTable.Seasons));
+        const seasons = await response.json();
+        setAllSeasons(seasons);
+        localStorage.setItem("seasons", JSON.stringify(seasons));
         return;
 
       } else {

@@ -18,12 +18,13 @@ export interface Root {
   }
   
   export interface Race {
-    season: string
-    round: string
-    url: string
-    raceName: string
-    Circuit: Circuit
+    circuitName: string
     date: string
+    id: number
+    raceName: string
+    round: string
+    season: string
+    url: string
   }
   
   export interface Circuit {
@@ -31,6 +32,8 @@ export interface Root {
     url: string
     circuitName: string
     Location: Location
+    locality: string
+    id: number
   }
   
   export interface Location {

@@ -9,14 +9,14 @@ export default function Constructor() {
   useEffect(() => {
     const loadConstructor = async () => {
         const options = {};
-        if (localStorage.getItem("constructors/") === null) {
+        if (localStorage.getItem("constructors/" + constructorId) === null) {
 
-          const url = `http://ergast.com/api/f1/constructors/${constructorId}.json`;
+          const url = `http://localhost:8081/constructors/${constructorId}`;
           const response = await fetch(url, options);
           const constructor = await response.json();
-          const result = constructor.MRData.ConstructorTable.Constructors;
-          setConstructorStandings(result[0]);
-          localStorage.setItem("construtors/" + constructorId, JSON.stringify(result[0]));
+          console.log(constructor)
+          setConstructorStandings(constructor);
+          localStorage.setItem("constructors/" + constructorId, JSON.stringify(constructor));
           return;
 
         } else {
@@ -42,13 +42,13 @@ export default function Constructor() {
 
     return(
       <React.Fragment>
-        <h2>{(constructorStandings as any).name}</h2>
+        <h2>{(constructorStandings[0] as any).name}</h2>
         <ul className="nav">
           <li className="nav-item">
-            Nationality: {(constructorStandings as any).nationality}
+            Nationality: {(constructorStandings[0] as any).nationality}
           </li>
           <li className="nav-item">
-            More Information: <a href={(constructorStandings as any).url}>Wikipedia</a>
+            More Information: <a href={(constructorStandings[0] as any).url}>Wikipedia</a>
           </li>
         </ul>
       </React.Fragment>

@@ -10,14 +10,14 @@ export default function Driver() {
     const loadDriver = async () => {
         const options = {};
 
-        if (localStorage.getItem("driverStandings") === null) {
+        if (localStorage.getItem("drivers/" + driverId) === null) {
 
-          const url = `http://ergast.com/api/f1/drivers/${driverId}.json`;
+          const url = `http://localhost:8081/drivers/${driverId}`;
           const response = await fetch(url, options);
           const driver = await response.json();
-          const result = driver.MRData.DriverTable.Drivers;
-          setDriverStandings(result[0]);
-          localStorage.setItem("drivers/" + driverId, JSON.stringify(result[0]));
+          setDriverStandings(driver);
+          console.log(driver)
+          localStorage.setItem("drivers/" + driverId, JSON.stringify(driver));
           return;
 
         } else {
@@ -43,16 +43,16 @@ export default function Driver() {
 
     return(
       <React.Fragment>
-        <h2>{(driverStandings as any).givenName + " " + (driverStandings as any).familyName}</h2>
+        <h2>{(driverStandings[0] as any).givenName + " " + (driverStandings[0] as any).familyName}</h2>
         <ul className="nav">
           <li className="nav-item">
-            Birth of Date: {(driverStandings as any).dateOfBirth}
+            Birth of Date: {(driverStandings[0] as any).dateOfBirth}
           </li>
           <li className="nav-item">
-            Nationality: {(driverStandings as any).nationality}
+            Nationality: {(driverStandings[0] as any).nationality}
           </li>
           <li className="nav-item">
-            More Information:<a href={(driverStandings as any).url}>Wikipedia</a>
+            More Information:<a href={(driverStandings[0] as any).url}>Wikipedia</a>
           </li>
         </ul>
       </React.Fragment>

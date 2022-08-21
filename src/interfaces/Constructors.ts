@@ -24,11 +24,14 @@ export interface Root {
   }
   
   export interface ConstructorStanding {
-    position: string
-    positionText: string
-    points: string
+    id: number
+    name: string
+    constructorId: string
+    points: number
+    season: string
     wins: string
-    Constructor: Constructor
+    round: string
+    position: string
   }
   
   export interface Constructor {

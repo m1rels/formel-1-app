@@ -2,30 +2,29 @@ import React, {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 import {Link} from "react-router-dom";
-import { DriverStanding, Root } from "../interfaces/Drivers";
+import { DriverStanding } from "../interfaces/Drivers";
 
 export default function Drivers(): JSX.Element {
-    const { year } = useParams();
+  const { year } = useParams();
   const [allDrivers, setAllDrivers] = useState<DriverStanding[] | undefined>(undefined);
-
+  
   useEffect(() => {
     const loadDrivers = async (): Promise<void> => {
         const options = {};
 
-        if (localStorage.getItem("allDrivers") === null) {
+        if (localStorage.getItem("drivers/" + year) === null) {
 
-          const url = `http://ergast.com/api/f1/${year}/driverStandings.json`;
+          const url = `http://localhost:8081/seasons/${year}/drivers`;
           const response = await fetch(url, options);
-          const drivers: Root = await response.json();
-          const result = drivers.MRData.StandingsTable.StandingsLists;
-          setAllDrivers(result[0].DriverStandings);
-          console.log("Hallo", result);
-          localStorage.setItem("drivers/" + year, JSON.stringify(result[0].DriverStandings));
+          const drivers = await response.json();
+          setAllDrivers(drivers);
+          console.log("Hallo", drivers);
+          localStorage.setItem("drivers/" + year, JSON.stringify(drivers));
           return;
 
         } else {
 
-          const saved = localStorage.getItem("drivers" + year);
+          const saved = localStorage.getItem("drivers/" + year);
           if (saved) {
             const initialValue = JSON.parse(saved);
             setAllDrivers(initialValue);
@@ -48,9 +47,9 @@ export default function Drivers(): JSX.Element {
 
   allDrivers.forEach((driver): void => {
     drivers.push(
-      <tr key={driver.Driver.driverId}>
+      <tr key={driver.driverId}>
         <td className="text-center">{driver.position}</td>
-        <td><Link to={`/drivers/${driver.Driver.driverId}`}>{driver.Driver.givenName + " " + driver.Driver.familyName}</Link></td>
+        <td><Link to={`/drivers/${driver.driverId}`}>{driver.givenName + " " + driver.familyName}</Link></td>
         <td className="text-center">{driver.points}</td>
         <td className="text-center">{driver.wins}</td>
       </tr>

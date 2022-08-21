@@ -24,14 +24,17 @@ export interface Root {
   }
   
   export interface DriverStanding {
-    position: string
-    positionText: string
+    driverId: string
+    familyName: string
+    givenName: string
+    id: number
     points: string
+    position: string
+    round: string
+    season: string
     wins: string
-    Driver: Driver
-    Constructors: Constructor[]
   }
-  
+
   export interface Driver {
     driverId: string
     url: string

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 import {Link} from "react-router-dom";
-import { ConstructorStanding, Root } from "../interfaces/Constructors";
+import { ConstructorStanding } from "../interfaces/Constructors";
 
 export default function Constructors() {
     const { year } = useParams();
@@ -11,14 +11,14 @@ export default function Constructors() {
     useEffect(() => {
         const loadConstructors = async () => {
             const options = {};
-            if(localStorage.getItem("allConstructors") === null) {
+            if(localStorage.getItem("constructors/" + year) === null) {
 
-              const url = `http://ergast.com/api/f1/${year}/constructorStandings.json`;
+              const url = `http://localhost:8081/seasons/${year}/constructors`;
               const response = await fetch(url, options);
-              const constructors: Root = await response.json();
-              const result = constructors.MRData.StandingsTable.StandingsLists;
-              setAllConstructors(result[0].ConstructorStandings);
-              localStorage.setItem("constructors/" + year, JSON.stringify(result[0].ConstructorStandings));
+              const constructors = await response.json();
+              setAllConstructors(constructors);
+              console.log(constructors)
+              localStorage.setItem("constructors/" + year, JSON.stringify(constructors));
               return;
 
             } else {
@@ -46,9 +46,9 @@ export default function Constructors() {
 
   allConstructors.forEach((constructor) => {
     constructors.push(
-      <tr key={constructor.Constructor.constructorId}>
+      <tr key={constructor.constructorId}>
         <td className="text-center">{constructor.position}</td>
-        <td><Link to={`/constructors/${constructor.Constructor.constructorId}`}>{constructor.Constructor.name}</Link></td>
+        <td><Link to={`/constructors/${constructor.constructorId}`}>{constructor.name}</Link></td>
         <td className="text-center">{constructor.points}</td>
         <td className="text-center">{constructor.wins}</td>
       </tr>

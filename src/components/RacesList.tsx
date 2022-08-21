@@ -11,13 +11,13 @@ export default function RacesList() {
     useEffect(() => {
         const loadRaces = async () => {
             const options = {};
-            if (localStorage.getItem("allRaces") === null) {
-              const url = `http://ergast.com/api/f1/${year}.json`;
+            if (localStorage.getItem("races/" + year) === null) {
+              const url = `http://localhost:8081/seasons/${year}/races`;
               const response = await fetch(url, options);
-              const races: Root = await response.json();
-              const result = races.MRData.RaceTable.Races;
-              setAllRaces(result);
-              localStorage.setItem("races/" + year, JSON.stringify(result));
+              const races = await response.json();
+              console.log(races)
+              setAllRaces(races);
+              localStorage.setItem("races/" + year, JSON.stringify(races));
               return;
             } else {
               const saved = localStorage.getItem("races/" + year);
@@ -39,12 +39,12 @@ export default function RacesList() {
 
       const raceDetails: JSX.Element[] = [];
 
-      allRaces.forEach((race): void => {
+      allRaces.forEach((race: any): void => {
         raceDetails.push(
         <tr key={race.round}><td className="text-normal column col-1 text-center">{race.round}</td>
                 <td className="text-normal column col-1"><a href={race.url}>{race.raceName}</a></td>
                 <td className="text-normal column col-1 text-center">{race.date}</td>
-                <td className="text-normal column col-1"><Link to={`/circuits/${race.Circuit.circuitId}`}>{race.Circuit.circuitName}</Link></td>
+                <td className="text-normal column col-1"><Link to={`/circuits/${race.circuitId}`}>{race.circuitName}</Link></td>
                 </tr>
                 );
       });

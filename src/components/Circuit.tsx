@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 
+
 export default function Circuit() {
     const { circuitId } = useParams();
     const [circuitStandings, setCircuitStandings] = useState([]);
@@ -10,14 +11,13 @@ export default function Circuit() {
     const loadCircuit = async () => {
         const options = {};
 
-        if (localStorage.getItem("circuitStandings") === null) {
+        if (localStorage.getItem("circuits/" + circuitId) === null) {
 
-          const url = `http://ergast.com/api/f1/circuits/${circuitId}.json`;
+          const url = `http://localhost:8081/circuits/${circuitId}`;
           const response = await fetch(url, options);
-          const circuit: any = await response.json();
-          const result = circuit.MRData.CircuitTable.Circuits;
-          setCircuitStandings(result);
-          localStorage.setItem("circuits/" + circuitId, JSON.stringify(result));
+          const circuit = await response.json();
+          setCircuitStandings(circuit[0]);
+          localStorage.setItem("circuits/" + circuitId, JSON.stringify(circuit));
           return;
 
         } else {
@@ -25,7 +25,7 @@ export default function Circuit() {
             const saved = localStorage.getItem("circuits/" + circuitId);
             if (saved) {
               const initialValue = JSON.parse(saved);
-              setCircuitStandings(initialValue);
+              setCircuitStandings(initialValue[0]);
             }
         
             return;
@@ -42,19 +42,20 @@ export default function Circuit() {
     return <LoadingIndicator />;
   }
 
+  console.log(circuitStandings)
 
   return (
     <React.Fragment>
-      <h2>{(circuitStandings[0] as any).circuitName}</h2>
+      <h2>{(circuitStandings as any).circuitName}</h2>
         <ul className="nav">
           <li className="nav-item">
-            Country: {(circuitStandings[0] as any).Location.country}
+            Country: {(circuitStandings as any).country}
           </li>
           <li className="nav-item">
-            Locality: {(circuitStandings[0] as any).Location.locality}
+            Locality: {(circuitStandings as any).locality}
           </li>
           <li className="nav-item">
-            More Information:<a href={(circuitStandings[0] as any).url}>Wikipedia</a>
+            More Information:<a href={(circuitStandings as any).url}>Wikipedia</a>
           </li>
         </ul>
     </React.Fragment>
