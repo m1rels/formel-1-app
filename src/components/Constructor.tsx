@@ -35,7 +35,7 @@ export default function Constructor() {
     loadConstructor();
    
   }, []);
-
+  
   if (!constructorStandings) {
     return <LoadingIndicator />;
   }

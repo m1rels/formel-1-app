@@ -9,6 +9,7 @@ import Driver from "./components/Driver";
 import Constructor from "./components/Constructor";
 import RacesList from "./components/RacesList";
 import Circuit from "./components/Circuit";
+import Seasons from "./components/Seasons";
 
   const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
@@ -17,7 +18,8 @@ import Circuit from "./components/Circuit";
   root.render(
     <BrowserRouter>
       <Routes>
-          <Route path="/seasons" element={<App />}/>
+          <Route path="/" element={<App />}/>
+          <Route path="/seasons" element={<Seasons />}/>
           <Route path="/seasons/:year/drivers" element={<Drivers />} />
           <Route path="/seasons/:year/constructors" element={<Constructors />} />
           <Route path="/drivers/:driverId" element={<Driver />} />
