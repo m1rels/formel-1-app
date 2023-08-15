@@ -16,8 +16,8 @@ To run the Formula 1 App locally on your machine:
 1. Clone this repository to your local environment.
 
    ```bash
-   git clone https://github.com/your-username/formula-1-web-app.git
-   cd formula-1-web-app
+   git clone https://github.com/m1rels/formula-1-app.git
+   cd formula-1--app
   
 2. Install the required dependencies.
 
