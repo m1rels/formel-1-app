@@ -28,7 +28,7 @@ export default function App(): JSX.Element {
             textAlign="center"
             fontWeight={500}
           >
-            Let's experience the history of the Formula 1 World!
+            Let&apos;s experience the history of the Formula 1 World!
           </Heading>
           <Center>
             <UnorderedList fontSize={16} mt={5}>

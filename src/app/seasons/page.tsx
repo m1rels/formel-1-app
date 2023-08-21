@@ -14,7 +14,6 @@ import {
   Heading,
 SimpleGrid,
 Center} from '@chakra-ui/react';
-import Navbar from "@/components/NavBar";
 
 export default function Seasons(): any {
   const [allSeasons, setAllSeasons] = useState<any[]>([]);
