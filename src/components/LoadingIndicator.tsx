@@ -1,9 +1,16 @@
+import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 
-export default function LoadingIndicator() {
-  return (
-    <div>
-      <h1>Drivers/constructors are loading...</h1>
-    </div>
-  );
+interface TitleProps {
+  title: string;
 }
+
+const LoadingIndicator: React.FC<TitleProps> = (props) => {
+  return (
+    <Box m={[5, 20]} mt="72px">
+      <Text>{props.title}</Text>
+    </Box>
+  );
+};
+
+export default LoadingIndicator;

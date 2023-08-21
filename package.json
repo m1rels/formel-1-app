@@ -1,48 +1,35 @@
 {
-  "name": "formel-1",
+  "name": "formula-1-app-next",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/jest": "^28.1.7",
-    "@types/node": "^18.7.6",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "cors": "^2.8.5",
-    "express": "^4.18.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.7.4",
-    "web-vitals": "^2.1.4"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
     "format": "prettier --write src/**/*.js"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.0",
+    "@chakra-ui/next-js": "^2.1.5",
+    "@chakra-ui/react": "^2.8.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@types/node": "20.5.0",
+    "@types/react": "18.2.20",
+    "@types/react-dom": "18.2.7",
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "eslint": "8.47.0",
+    "eslint-config-next": "13.4.16",
+    "framer-motion": "^10.16.1",
+    "next": "13.4.16",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.1.6"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
