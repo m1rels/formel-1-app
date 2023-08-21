@@ -1,10 +1,12 @@
 {
-  "name": "formula-1-app-next",
+  "name": "formula-1-app",
+  "homepage": "https://m1rels.github.io/formula-1-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "deploy": "npm run build && gh-pages -d build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write src/**/*.js"
@@ -29,6 +31,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "gh-pages": "^6.0.0",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1"
   }
