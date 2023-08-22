@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import LoadingIndicator from "../../components/LoadingIndicator";
-import { getDrivers } from "../../../services/drivers";
 import {
   Card,
   CardBody,
@@ -16,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { fetchDriversData } from "../../../services/fomula-1-api";
 
 export default function Constructor() {
   const [drivers, setDrivers] = useState<any[]>([]);
@@ -23,26 +23,9 @@ export default function Constructor() {
 
   useEffect(() => {
     async function loadData() {
-      try {
-        let driversData;
-
-        // Versuche, die Daten aus dem Local Storage zu holen
-        const storedDriversData = localStorage.getItem(`driversData`);
-        if (storedDriversData) {
-          driversData = JSON.parse(storedDriversData);
-        } else {
-          driversData = await getDrivers();
-          // Speichere die Daten im Local Storage
-          localStorage.setItem(`driversData`, JSON.stringify(driversData));
-        }
-
-        setDrivers(driversData);
-        setIsLoading(false);
-        // Weitere Verarbeitung der Daten...
-      } catch (error) {
-        console.error("Error loading seasons:", error);
-        setIsLoading(false);
-      }
+      const drivers = await fetchDriversData();
+      setDrivers(drivers);
+      setIsLoading(false);
     }
 
     loadData();
@@ -90,7 +73,7 @@ export default function Constructor() {
   });
 
   return (
-    <Box m={[5, 20]} mb={10} mt="72px">
+    <Box m={[5, 20]} mb={20} mt="72px">
       <Box maxW={1200} m="auto">
         <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
           Drivers

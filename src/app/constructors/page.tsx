@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { fetchConstructorsData } from "../../../services/fomula-1-api";
 
 export default function Constructor() {
   const [constructors, setConstrcutors] = useState<any[]>([]);
@@ -23,29 +24,9 @@ export default function Constructor() {
 
   useEffect(() => {
     async function loadData() {
-      try {
-        let constructorsData;
-
-        // Versuche, die Daten aus dem Local Storage zu holen
-        const storedConstructorsData = localStorage.getItem(`constructorsData`);
-        if (storedConstructorsData) {
-          constructorsData = JSON.parse(storedConstructorsData);
-        } else {
-          constructorsData = await getConstructors();
-          // Speichere die Daten im Local Storage
-          localStorage.setItem(
-            `constrcutorsData`,
-            JSON.stringify(constructorsData)
-          );
-        }
-
-        setConstrcutors(constructorsData);
-        setIsLoading(false);
-        // Weitere Verarbeitung der Daten...
-      } catch (error) {
-        console.error("Error loading seasons:", error);
-        setIsLoading(false);
-      }
+      const constructors = await fetchConstructorsData();
+      setConstrcutors(constructors);
+      setIsLoading(false);
     }
 
     loadData();
@@ -93,7 +74,7 @@ export default function Constructor() {
   });
 
   return (
-    <Box mx={[5, 20]} mb={10} mt="72px">
+    <Box mx={[5, 20]} mb={20} mt="72px">
       <Box maxW={1200} m="auto">
         <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
           Constructors

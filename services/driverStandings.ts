@@ -1,11 +1,11 @@
 import { openDb } from "../src/utils/database";
 const STORE_NAME = "driverStandings";
 
-export async function getDriverStandings(): Promise<any[]>  {
+export async function getDriverStandings(year: string): Promise<any[]>  {
     return new Promise(async (resolve, reject) => {
     const db = await openDb(STORE_NAME);
     const driverStandingsObjectStore = db.transaction([STORE_NAME], "readonly").objectStore(STORE_NAME);
-    const value = driverStandingsObjectStore.getAll();
+    const value = driverStandingsObjectStore.get(year);
     value.onsuccess = function(evt) {
         const result = value.result;
         resolve(result);

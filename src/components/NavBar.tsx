@@ -26,7 +26,7 @@ export default function Navbar() {
       as="nav"
       align="center"
       justify="space-between"
-      p={4}
+      px={4}
       bg={bgColor[colorMode]}
       position="fixed"
       top="0"
@@ -35,8 +35,8 @@ export default function Navbar() {
       zIndex={1}
     >
       <Box>
-        <Link href="/" fontSize="xl" fontWeight="bold">
-          <Image src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg" />
+        <Link href="/#" fontSize="50px" fontWeight="bold" position="relative" top={-2} m={0}>
+          🏎️
         </Link>
       </Box>
       <Box>

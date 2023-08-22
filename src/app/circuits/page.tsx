@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import LoadingIndicator from "../../components/LoadingIndicator";
-import { getCircuits } from "../../../services/circuits";
 import {
   Card,
   CardBody,
@@ -15,8 +14,8 @@ import {
   Center,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { fetchCircuitsData } from "../../../services/fomula-1-api";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import Navbar from "@/components/NavBar";
 
 export default function Circuit({ params }: { params: { circuitId: string } }) {
   const [circuits, setCircuits] = useState<any[]>([]);
@@ -24,27 +23,9 @@ export default function Circuit({ params }: { params: { circuitId: string } }) {
 
   useEffect(() => {
     async function loadData() {
-      try {
-        let circuitsData;
-
-        // Versuche, die Daten aus dem Local Storage zu holen
-        const storedConstructorStandingsData =
-          localStorage.getItem(`circuitsData`);
-        if (storedConstructorStandingsData) {
-          circuitsData = JSON.parse(storedConstructorStandingsData);
-        } else {
-          circuitsData = await getCircuits();
-          // Speichere die Daten im Local Storage
-          localStorage.setItem(`circuitsData`, JSON.stringify(circuitsData));
-        }
-
-        setCircuits(circuitsData);
-        setIsLoading(false);
-        // Weitere Verarbeitung der Daten...
-      } catch (error) {
-        console.error("Error loading seasons:", error);
-        setIsLoading(false);
-      }
+      const circuits = await fetchCircuitsData();
+      setCircuits(circuits);
+      setIsLoading(false);
     }
 
     loadData();
@@ -92,7 +73,7 @@ export default function Circuit({ params }: { params: { circuitId: string } }) {
   });
 
   return (
-    <Box mx={[5, 20]} mb={10} mt="72px">
+    <Box mx={[5, 20]} mb={20} mt="72px">
       <Box maxW={1200} m="auto">
         <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
           Circuits

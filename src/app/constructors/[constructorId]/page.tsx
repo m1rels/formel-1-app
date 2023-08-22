@@ -2,45 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import LoadingIndicator from "../../../components/LoadingIndicator";
-import { getConstructors } from "../../../../services/constructors";
 import { Box, ListItem, UnorderedList, Heading, Link } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
+import { fetchConstructorData } from "../../../../services/fomula-1-api";
 
 
-export default function Constructor({
-  params,
-}: {
-  params: { constructorId: string };
-}) {
-  const [constructors, setConstructors] = useState<any[]>([]);
+export default function Constructor({ params }: { params: { constructorId: string } }) {
+  const [constructor, setConstructor] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      try {
-        let constructorsData;
-
-        // Versuche, die Daten aus dem Local Storage zu holen
-        const storedConstructorsData = localStorage.getItem(`constructorsData`);
-        if (storedConstructorsData) {
-          constructorsData = JSON.parse(storedConstructorsData);
-        } else {
-          constructorsData = await getConstructors();
-          // Speichere die Daten im Local Storage
-          localStorage.setItem(
-            `constructorsData`,
-            JSON.stringify(constructorsData)
-          );
-        }
-
-        setConstructors(constructorsData);
-        setIsLoading(false);
-        // Weitere Verarbeitung der Daten...
-      } catch (error) {
-        console.error("Error loading seasons:", error);
-        setIsLoading(false);
-      }
+      const constructor = await fetchConstructorData(params.constructorId);
+      setConstructor(constructor);
+      setIsLoading(false);
     }
 
     loadData();
@@ -50,21 +26,17 @@ export default function Constructor({
     return <LoadingIndicator title="Constructor is loading..." />;
   }
 
-  const filteredConstructorsData = constructors.find(
-    (item) => item.constructorId === params.constructorId
-  );
-
   return (
     <Box m={10} mt="72px">
       <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
-        {filteredConstructorsData.name}
+        {constructor[0].name}
       </Heading>
       <UnorderedList>
-        <ListItem>Nationality: {filteredConstructorsData.nationality}</ListItem>
+        <ListItem>Nationality: {constructor[0].nationality}</ListItem>
         <ListItem>
           More Information:{" "}
           <Link
-            href={filteredConstructorsData.url}
+            href={constructor[0].url}
             as={NextLink}
             isExternal
             color="gray.300"

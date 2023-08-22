@@ -2,9 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
-import { Race, Root } from "../../../../interfaces/Races";
 import LoadingIndicator from "../../../../components/LoadingIndicator";
-import { getRaces } from "../../../../../services/races";
 import {
   Heading,
   Table,
@@ -20,33 +18,17 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { fetchRacesData } from "../../../../../services/fomula-1-api";
 
 export default function Races({ params }: { params: { year: string } }) {
-  const [allRaces, setAllRaces] = useState<any[]>([]);
+  const [races, setRaces] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      try {
-        let racesData;
-
-        // Versuche, die Daten aus dem Local Storage zu holen
-        const storedRacesData = localStorage.getItem(`storedRacesData`);
-        if (storedRacesData) {
-          racesData = JSON.parse(storedRacesData);
-        } else {
-          racesData = await getRaces();
-          // Speichere die Daten im Local Storage
-          localStorage.setItem(`storedRacesData`, JSON.stringify(racesData));
-        }
-
-        setAllRaces(racesData);
-        setIsLoading(false);
-        // Weitere Verarbeitung der Daten...
-      } catch (error) {
-        console.error("Error loading seasons:", error);
-        setIsLoading(false);
-      }
+      const races = await fetchRacesData(params.year);
+      setRaces(races);
+      setIsLoading(false);
     }
 
     loadData();
@@ -56,11 +38,9 @@ export default function Races({ params }: { params: { year: string } }) {
     return <LoadingIndicator title="Races are loading..." />;
   }
 
-  const filteredRaces = allRaces.filter((item) => item.season === params.year);
-
   const raceDetails: JSX.Element[] = [];
 
-  filteredRaces.forEach((race: any): void => {
+  races.forEach((race: any): void => {
     raceDetails.push(
       <Tr key={race.round}>
         <Td>{race.round}</Td>
@@ -81,7 +61,7 @@ export default function Races({ params }: { params: { year: string } }) {
   });
 
   return (
-    <Center mt="72px" mb={10}>
+    <Center mt="72px" mb={20}>
       <Container maxWidth="1200px" mx={[10, 20]}>
         <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
           Race Schedule of {params.year}
