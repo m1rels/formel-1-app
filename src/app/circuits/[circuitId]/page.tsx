@@ -9,12 +9,12 @@ export async function generateStaticParams() {
   const circuits = response.data.MRData.CircuitTable.Circuits;
 
   return circuits.map((circuit: any) => ({
-    id: circuit.id
+    circuitId: circuit.id
   }))
 }
 
-async function getCircuit(id: string) {
-  const response = await axios.get(`https://ergast.com/api/f1/circuits/${id}.json?limit=77`);
+async function getCircuit(circuitId: string) {
+  const response = await axios.get(`https://ergast.com/api/f1/circuits/${circuitId}.json?limit=77`);
 
   const circuit = response.data.MRData.CircuitTable.Circuits;
 

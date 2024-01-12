@@ -9,12 +9,12 @@ export async function generateStaticParams() {
   const drivers = response.data.MRData.DriverTable.Drivers;
 
   return drivers.map((driver: any) => ({
-    id: driver.id
+    driverId: driver.id
   }))
 }
 
-async function getDriver(id: string) {
-  const response = await axios.get(`https://ergast.com/api/f1/drivers/${id}.json?limit=857`);
+async function getDriver(driverId: string) {
+  const response = await axios.get(`https://ergast.com/api/f1/drivers/${driverId}.json?limit=857`);
 
   const driver = response.data.MRData.DriverTable.Drivers;
 

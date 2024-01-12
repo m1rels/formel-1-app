@@ -9,12 +9,12 @@ export async function generateStaticParams() {
   const constructors = response.data.MRData.ConstructorTable.Constructors
 
   return constructors.map((constructor: any) => ({
-    id: constructor.id
+    constructorId: constructor.id
   }))
 }
 
-async function getConstructor(id: string) {
-  const response = await axios.get(`https://ergast.com/api/f1/constructors/${id}.json?limit=211`);
+async function getConstructor(constructorId: string) {
+  const response = await axios.get(`https://ergast.com/api/f1/constructors/${constructorId}.json?limit=211`);
 
   const constructor = response.data.MRData.ConstructorTable.Constructors;
 
