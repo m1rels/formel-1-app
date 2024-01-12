@@ -1,92 +1,34 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import axios from "axios";
 import LoadingIndicator from "../../../../components/LoadingIndicator";
-import Link from "next/link";
-import {
-  Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Center,
-  Container,
-} from "@chakra-ui/react";
-import { fetchConstructorStandingsData } from "../../../../../services/fomula-1-api";
+import ConstructorStandings from "@/components/ConstructorStandings";
 
-export default function Constructors({ params }: { params: { year: string } }) {
-  const [constructorStandings, setConstructorStandings] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export async function generateStaticParams() {
+  const season: any = await axios.get("https://ergast.com/api/f1/seasons.json?limit=74");
+  const seasons = season.data.MRData.SeasonTable.Seasons;
 
-  useEffect(() => {
-    async function loadData() {
-      const constructorStandings = await fetchConstructorStandingsData(
-        params.year
-      );
-      setConstructorStandings(constructorStandings);
-      setIsLoading(false);
-    }
+  return seasons.map((season: any) => ({
+    year: season.season
+  }))
+}
 
-    loadData();
-  }, []);
+async function getConstructorStandings(year: string) {
+  const response = await axios.get(`https://ergast.com/api/f1/${year}/constructorStandings.json?limit=100`);
 
-  if (isLoading) {
+  const driverStandings = response.data.MRData.StandingsTable.StandingsLists;
+
+  return driverStandings;
+}
+
+export default async function Constructors({ params }: { params: { year: string } }) {
+
+  const constructorStandings = await getConstructorStandings(params.year);
+
+  if (constructorStandings === null) {
     return <LoadingIndicator title="Constructor Standings are loading..." />;
   }
 
-  const constructors: JSX.Element[] = [];
-
-  if (constructorStandings) {
-    constructorStandings[0].ConstructorStandings.forEach((constructor: any) => {
-      constructors.push(
-        <Tr key={constructor.Constructor.constructorId}>
-          <Td>{constructor.position}</Td>
-          <Td color="gray.400">
-            <Link
-              href={`/constructors/${constructor.Constructor.constructorId}`}
-            >
-              {constructor.Constructor.name}
-            </Link>
-          </Td>
-          <Td className="text-center">{constructor.points}</Td>
-          <Td className="text-center">{constructor.wins}</Td>
-        </Tr>
-      );
-    });
-  }
-
   return (
-    <Center mt="72px" mb={20}>
-      <Container maxWidth="1200px" mx={[10, 20]}>
-        <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
-          Constructor Standings of {params.year}
-        </Heading>
-        <TableContainer>
-          <Table size={["sm", "md"]}>
-            <Thead>
-              <Tr>
-                <Th>Rank</Th>
-                <Th>Constructor</Th>
-                <Th>Points</Th>
-                <Th>Wins</Th>
-              </Tr>
-            </Thead>
-            <Tbody>{constructors}</Tbody>
-            <Tfoot>
-              <Tr>
-                <Th>Rank</Th>
-                <Th>Constructor</Th>
-                <Th>Points</Th>
-                <Th>Wins</Th>
-              </Tr>
-            </Tfoot>
-          </Table>
-        </TableContainer>
-      </Container>
-    </Center>
-  );
+    <ConstructorStandings constructorStandings={constructorStandings[0]} season={params.year} />
+  )
+  
 }

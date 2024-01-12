@@ -1,54 +1,35 @@
-"use client";
+import React from "react";
+import axios from "axios";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import DriverData from "@/components/Driver";
 
-import React, { useState, useEffect } from "react";
-import LoadingIndicator from "../../../components/LoadingIndicator";
-import { Box, ListItem, UnorderedList, Heading, Link } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import NextLink from "next/link";
-import { fetchDriverData } from "../../../../services/fomula-1-api";
+export async function generateStaticParams() {
+  const response = await axios.get(`https://ergast.com/api/f1/drivers.json?limit=857`);
 
-export default function Driver({ params }: { params: { driverId: string } }) {
-  const [driver, setDriver] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const drivers = response.data.MRData.DriverTable.Drivers;
 
-  useEffect(() => {
-    async function loadData() {
-      const driver = await fetchDriverData(params.driverId);
-      console.log(driver);
-      setDriver(driver);
-      setIsLoading(false);
-    }
+  return drivers.map((driver: any) => ({
+    id: driver.id
+  }))
+}
 
-    loadData();
-  }, []);
+async function getDriver(id: string) {
+  const response = await axios.get(`https://ergast.com/api/f1/drivers/${id}.json?limit=857`);
 
-  if (isLoading) {
+  const driver = response.data.MRData.DriverTable.Drivers;
+
+  return driver;
+}
+
+export default async function Driver({ params }: { params: { driverId: string } }) {
+
+  const driver = await getDriver(params.driverId);
+
+  if (driver === null) {
     return <LoadingIndicator title="Driver is loading..." />;
   }
 
   return (
-    <Box m={10} mt="72px">
-      <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
-        {driver[0].givenName +
-          " " +
-          driver[0].familyName}
-      </Heading>
-      <UnorderedList>
-        <ListItem>Birth of Date: {driver[0].dateOfBirth}</ListItem>
-        <ListItem>Nationality: {driver[0].nationality}</ListItem>
-        <ListItem>
-          More Information:{" "}
-          <Link
-            href={driver[0].url}
-            as={NextLink}
-            isExternal
-            color="gray.300"
-          >
-            Wikipedia
-            <ExternalLinkIcon mx={2} />
-          </Link>
-        </ListItem>
-      </UnorderedList>
-    </Box>
+    <DriverData givenName={driver[0].givenName} familyName={driver[0].familyName} dateOfBirth={driver[0].dateOfBirth} nationality={driver[0].nationality} url={driver[0].url}  />
   );
 }

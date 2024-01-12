@@ -1,51 +1,37 @@
-"use client";
+import React from "react";
+import axios from "axios";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import ConstructorData from "@/components/Constructor";
 
-import React, { useState, useEffect } from "react";
-import LoadingIndicator from "../../../components/LoadingIndicator";
-import { Box, ListItem, UnorderedList, Heading, Link } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import NextLink from "next/link";
-import { fetchConstructorData } from "../../../../services/fomula-1-api";
+export async function generateStaticParams() {
+  const response = await axios.get(`https://ergast.com/api/f1/constructors.json?limit=211`);
 
+  const constructors = response.data.MRData.ConstructorTable.Constructors
 
-export default function Constructor({ params }: { params: { constructorId: string } }) {
-  const [constructor, setConstructor] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  return constructors.map((constructor: any) => ({
+    id: constructor.id
+  }))
+}
 
-  useEffect(() => {
-    async function loadData() {
-      const constructor = await fetchConstructorData(params.constructorId);
-      setConstructor(constructor);
-      setIsLoading(false);
-    }
+async function getConstructor(id: string) {
+  const response = await axios.get(`https://ergast.com/api/f1/constructors/${id}.json?limit=211`);
 
-    loadData();
-  }, []);
+  const constructor = response.data.MRData.ConstructorTable.Constructors;
 
-  if (isLoading) {
+  return constructor;
+}
+
+export default async function Constructor({ params }: { params: { constructorId: string } }) {
+
+  const constructor = await getConstructor(params.constructorId);
+
+  console.log()
+
+  if (constructor === null) {
     return <LoadingIndicator title="Constructor is loading..." />;
   }
 
   return (
-    <Box m={10} mt="72px">
-      <Heading mb={10} fontSize={{ base: "24px", md: "30px", lg: "36px" }}>
-        {constructor[0].name}
-      </Heading>
-      <UnorderedList>
-        <ListItem>Nationality: {constructor[0].nationality}</ListItem>
-        <ListItem>
-          More Information:{" "}
-          <Link
-            href={constructor[0].url}
-            as={NextLink}
-            isExternal
-            color="gray.300"
-          >
-            Wikipedia
-            <ExternalLinkIcon mx={2} />
-          </Link>
-        </ListItem>
-      </UnorderedList>
-    </Box>
+    <ConstructorData name={constructor[0].name} nationality={constructor[0].nationality} url={constructor[0].url}  />
   );
 }
