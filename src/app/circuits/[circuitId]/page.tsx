@@ -9,7 +9,7 @@ export async function generateStaticParams() {
   const circuits = response.data.MRData.CircuitTable.Circuits;
 
   return circuits.map((circuit: any) => ({
-    circuitId: circuit.id
+    circuitId: circuit.circuitId
   }))
 }
 

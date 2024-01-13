@@ -9,7 +9,7 @@ export async function generateStaticParams() {
   const constructors = response.data.MRData.ConstructorTable.Constructors
 
   return constructors.map((constructor: any) => ({
-    constructorId: constructor.id
+    constructorId: constructor.constructorId
   }))
 }
 

@@ -9,7 +9,7 @@ export async function generateStaticParams() {
   const drivers = response.data.MRData.DriverTable.Drivers;
 
   return drivers.map((driver: any) => ({
-    driverId: driver.id
+    driverId: driver.driverId
   }))
 }
 
