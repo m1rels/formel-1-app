@@ -33,7 +33,6 @@ export default function Navbar() {
       <Flex
         align="center"
         justify="center"
-        m={10}
       >
         <CircularProgress isIndeterminate thickness={4} color={progressColor[colorMode]} />
       </Flex>
