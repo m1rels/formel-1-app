@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
 import {
   Box,
@@ -14,14 +14,34 @@ import {
   MenuList,
   useColorMode,
   Image,
+  CircularProgress
 } from "@chakra-ui/react";
 import { HamburgerIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
 
 export default function Navbar() {
+  const [isLoading, setIsLoading] = useState(true);
   const { colorMode, toggleColorMode } = useColorMode();
   const bgColor = { light: "white", dark: "gray.800" };
+  const progressColor = { light: "gray.800", dark: "white" };
 
+  useEffect(() => {
+    setIsLoading(false);
+  }, [])
+
+  if (isLoading) {
+    return (
+      <Flex
+        align="center"
+        justify="center"
+        m={10}
+      >
+        <CircularProgress isIndeterminate thickness={4} color={progressColor[colorMode]} />
+      </Flex>
+    );
+  }
+  
   return (
+    
     <Flex
       as="nav"
       align="center"
@@ -33,7 +53,7 @@ export default function Navbar() {
       left="0"
       right="0"
       zIndex={1}
-    >
+    >    
       <Box>
         <Link href="/#" fontSize="50px" fontWeight="bold" position="relative" top={-2} m={0}>
           🏎️
