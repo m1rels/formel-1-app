@@ -45,5 +45,6 @@ The app will be accessible at http://localhost:3000.
 ## Technologies 
 
 - React.js and Next.js for building the interactive and dynamic user interface.
+- Chakra UI, a simple and fast component library
 - RESTful APIs to retrieve historical Formula 1 data from the [Ergast Developer API](http://ergast.com/mrd/).
   
