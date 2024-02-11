@@ -11,7 +11,7 @@ Welcome to the Formula 1 App! This app provides a comprehensive platform for acc
 
 ## How to Access
 
-Visit http://m1rels.github.io/formula-1-app and leran more about the Formula 1 World.
+Visit http://m1rels.github.io/formula-1 and leran more about the Formula 1 World.
 
 ## Getting Started
 
@@ -20,8 +20,8 @@ To run the Formula 1 App locally on your machine:
 1. Clone this repository to your local environment.
 
    ```bash
-   git clone https://github.com/m1rels/formula-1-app.git
-   cd formula-1-app
+   git clone https://github.com/m1rels/formula-1.git
+   cd formula-1
   
 2. Install the required dependencies.
 
