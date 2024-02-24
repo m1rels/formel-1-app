@@ -28,10 +28,6 @@ To run the Formula 1 App locally on your machine:
    ```bash
    npm install
 
-3. Configure any necessary environment variables, especially if you're using APIs to fetch data. Refer to the documentation for specific details.
-
-4. **Important**: Start the backend server that hosts the Formula 1 data. You'll find this server in the backend repository of the Formula 1 app. Navigate to that repository and follow the instructions to start the server.
-
 ## Usage
 
 Start the app on the development server using following command:
